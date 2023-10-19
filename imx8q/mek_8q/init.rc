@@ -25,6 +25,8 @@ on early-init
     # Use ro.boot.lcd_density to override ro.sf.lcd_density
     setprop ro.sf.lcd_density ${ro.boot.lcd_density}
 
+    setprop vendor.encrypted_boot_ota ${ro.boot.encrypted_boot_ota}
+
 # Skip charger_not_need trigger for charger mode
 on early-init && property:ro.boot.mode=charger
     setprop vendor.skip.charger_not_need 1
@@ -74,7 +76,7 @@ on late-fs && property:vendor.storageproxyd=trusty && property:vendor.skip.charg
 
 on late-fs && property:vendor.skip.charger_not_need=0
     # Start keymaster/gatekeeper service
-    start vendor.gatekeeper-1-0-${ro.boot.keystore}
+    start vendor.gatekeeper-${ro.boot.keystore}
     start vendor.keymint-${ro.boot.keystore}
     setprop vendor.powerhal.init 1
 
@@ -122,6 +124,9 @@ on early-boot && property:vendor.skip.charger_not_need=0
 
     # Set light sensor threshold lux value
     setprop vendor.ro.lightsensor.threshold  20
+
+    # Set external camera mjpeg decoder type
+    setprop vendor.camera.mjpg.decoder hardware
 
     # Set external camera mjpeg decoder type
     setprop vendor.camera.mjpg.decoder hardware
@@ -228,3 +233,12 @@ on property:ro.boot.vendor.sysrq=1 && property:vendor.skip.charger_not_need=0
 # setenv append_bootargs androidboot.usb.debugging=1
 on property:ro.boot.usb.debugging=1
     setprop persist.sys.usb.config adb
+
+service imx_dek_extractor /vendor/bin/hw/imx_dek_extractor
+    user system
+    group system
+    disabled
+    oneshot
+
+on property:sys.boot_completed=1 && property:vendor.encrypted_boot_ota=true
+    start imx_dek_extractor

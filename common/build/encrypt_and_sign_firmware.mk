@@ -29,7 +29,7 @@ ifeq (,$(wildcard $(FSL_RESTRICTED_CODEC_PATH)))
 $(info "use linux-imx-firmware")
 else
 $(info "use restricted-codec firmware")
-$(shell cp vendor/nxp-private/fsl-restricted-codec/fsl_real_dec/vpu_fw_imx8_dec.bin vendor/nxp/linux-firmware-imx/firmware/vpu/vpu_fw_imx8_dec.bin)
+$(shell cp $(FSL_RESTRICTED_CODEC_PATH)/vpu_fw_imx8_dec.bin vendor/nxp/linux-firmware-imx/firmware/vpu/vpu_fw_imx8_dec.bin)
 endif
 
 FIRMWARE_BINARY := vendor/nxp/linux-firmware-imx/firmware/vpu/vpu_fw_imx8_dec.bin

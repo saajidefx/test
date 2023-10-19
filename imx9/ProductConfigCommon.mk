@@ -1,7 +1,11 @@
 include $(CONFIG_REPO_PATH)/common/build/build_info.mk
 # -------@block_infrastructure-------
 ifneq ($(IMX9_BUILD_32BIT_ROOTFS),true)
+ifneq ($(filter TRUE true 1,$(IMX9_BUILD_64BIT_ROOTFS)),)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+else
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+endif
 endif
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic.mk)
@@ -24,7 +28,7 @@ PRODUCT_MANUFACTURER := nxp
 # related to the definition and load of library modules
 TARGET_BOARD_PLATFORM := imx
 
-PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_SHIPPING_API_LEVEL := 34
 
 # -------@block_app-------
 
@@ -125,7 +129,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.stagefright.ccodec=4  \
     debug.stagefright.omx_default_rank=0x200 \
-    debug.stagefright.c2-poolmask=0x70000
+    debug.stagefright.c2-poolmask=0x70000 \
+    debug.stagefright.c2inputsurface=-1
 
 -include $(FSL_RESTRICTED_CODEC_PATH)/fsl-restricted-codec/fsl_real_dec/fsl_real_dec.mk
 -include $(FSL_RESTRICTED_CODEC_PATH)/fsl-restricted-codec/fsl_ms_codec/fsl_ms_codec.mk
@@ -148,9 +153,8 @@ PRODUCT_COPY_FILES += \
 
 # A/B OTA
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl \
-    android.hardware.boot@1.2-impl.recovery \
-    android.hardware.boot@1.2-service \
+    android.hardware.boot-service.default \
+    android.hardware.boot-service.default_recovery \
     update_engine \
     update_engine_client \
     update_engine_sideload \
@@ -197,11 +201,15 @@ PRODUCT_PACKAGES += \
     lib_profiler \
     libimxcamerahwl_impl
 
+# external camera, AIDL
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-external-service \
-    android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl \
-    camera.device@3.2-impl
+    android.hardware.camera.provider-V1-external-service \
+    android.hardware.camera.metadata-V1-ndk.so \
+    android.hardware.graphics.allocator-V1-ndk.so \
+    android.hardware.camera.device-V1-ndk.so \
+    android.hardware.camera.provider-V1-ndk.so \
+    android.hardware.camera.provider-V1-external-impl.so \
+    camera.device-external-imx-impl.so
 endif
 endif
 

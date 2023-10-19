@@ -104,6 +104,7 @@ DEVICE_MANIFEST_FILE := $(IMX_DEVICE_PATH)/manifest_car.xml
 else
 DEVICE_MANIFEST_FILE := $(IMX_DEVICE_PATH)/manifest.xml
 endif
+
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := $(IMX_DEVICE_PATH)/device_framework_matrix.xml
 
 # Vendor compatibility matrix

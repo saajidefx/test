@@ -34,7 +34,7 @@ ENABLE_CAMERA_SERVICE ?= true
 # Add Car related HAL
 PRODUCT_PACKAGES += \
     android.hardware.automotive.vehicle@V1-imx-service \
-    android.hardware.broadcastradio@2.0-service \
+    android.hardware.broadcastradio-service.default \
     android.hardware.gnss-service.example
 
 # broadcast radio feature

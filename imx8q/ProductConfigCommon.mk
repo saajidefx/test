@@ -1,7 +1,11 @@
 include $(CONFIG_REPO_PATH)/common/build/build_info.mk
 # -------@block_infrastructure-------
 ifneq ($(IMX8_BUILD_32BIT_ROOTFS),true)
+ifneq ($(filter TRUE true 1,$(IMX8_BUILD_64BIT_ROOTFS)),)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit_only.mk)
+else
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+endif
 endif # IMX8_BUILD_32BIT_ROOTFS
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
@@ -31,7 +35,7 @@ PRODUCT_MANUFACTURER := nxp
 # related to the definition and load of library modules
 TARGET_BOARD_PLATFORM := imx
 
-PRODUCT_SHIPPING_API_LEVEL := 33
+PRODUCT_SHIPPING_API_LEVEL := 34
 
 # -------@block_app-------
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -134,15 +138,14 @@ PRODUCT_PACKAGES += \
     lib_imx_c2_v4l2_dev \
     lib_imx_c2_v4l2_dec \
     lib_imx_c2_v4l2_enc \
-    lib_imx_c2_process \
-    lib_imx_c2_process_isi_pre \
-    lib_imx_c2_process_g2d_post \
-    lib_imx_c2_g2d_filter \
     lib_imx_opencl_converter \
     ocl_converter.cl \
-    lib_imx_c2_opencl_filter \
-    lib_imx_c2_isi_filter \
-    lib_imx_c2_opencl_pre_filter \
+    lib_imx_c2_unia_post_filter \
+    lib_imx_c2_unia_pre_filter \
+    lib_imx_c2_filter_device_opencl \
+    lib_imx_c2_filter_device_isi \
+    lib_imx_c2_filter_device_g2d \
+    lib_imx_c2_filter_device_factory \
     libc2filterplugin \
     lib_c2_imx_store \
     lib_c2_imx_audio_dec_common \
@@ -167,7 +170,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     debug.stagefright.ccodec=4  \
     debug.stagefright.omx_default_rank=0x200 \
-    debug.stagefright.c2-poolmask=0x70000
+    debug.stagefright.c2-poolmask=0x70000 \
+    debug.stagefright.c2inputsurface=-1
 
 -include $(FSL_RESTRICTED_CODEC_PATH)/fsl-restricted-codec/fsl_real_dec/fsl_real_dec.mk
 -include $(FSL_RESTRICTED_CODEC_PATH)/fsl-restricted-codec/fsl_ms_codec/fsl_ms_codec.mk
@@ -186,9 +190,8 @@ PRODUCT_COPY_FILES += \
 
 # A/B OTA
 PRODUCT_PACKAGES += \
-    android.hardware.boot@1.2-impl \
-    android.hardware.boot@1.2-impl.recovery \
-    android.hardware.boot@1.2-service \
+    android.hardware.boot-service.default \
+    android.hardware.boot-service.default_recovery \
     update_engine \
     update_engine_client \
     update_verifier
@@ -219,10 +222,6 @@ PRODUCT_PACKAGES += \
     android.hardware.health-service.example_recovery \
     charger_res_images_vendor
 
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    apexd.config.dm_create.timeout=60000 \
-    apexd.config.loop_wait.attempts=99
-
 # -------@block_ethernet-------
 ifneq ($(PRODUCT_IMX_CAR),true)
 #PRODUCT_PACKAGES += \
@@ -230,6 +229,7 @@ ifneq ($(PRODUCT_IMX_CAR),true)
 endif
 
 # -------@block_camera-------
+ifneq ($(PRODUCT_IMX_CAR),true)
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.7-service-google \
     android.hardware.camera.provider@2.7-impl-google \
@@ -238,19 +238,28 @@ PRODUCT_PACKAGES += \
     lib_profiler \
     libimxcamerahwl_impl
 
+# external camera, AIDL
 PRODUCT_PACKAGES += \
-    android.hardware.camera.provider@2.4-external-service \
-    android.hardware.camera.provider@2.4-impl \
-    camera.device@1.0-impl \
-    camera.device@3.2-impl
+    android.hardware.camera.provider-V1-external-service \
+    android.hardware.camera.metadata-V1-ndk.so \
+    android.hardware.graphics.allocator-V1-ndk.so \
+    android.hardware.camera.device-V1-ndk.so \
+    android.hardware.camera.provider-V1-ndk.so \
+    android.hardware.camera.provider-V1-external-impl.so \
+    camera.device-external-imx-impl.so
+endif
+
+# Foreground service DeviceAsCamera
+PRODUCT_PACKAGES += \
+    DeviceAsWebcam
 
 PRODUCT_PACKAGES += \
     Camera2
 
 ifeq ($(PRODUCT_IMX_CAR),true)
-PRODUCT_PACKAGES += \
-    android.hardware.automotive.evs@1.1-EvsEnumeratorHw \
-    evs_service
+#PRODUCT_PACKAGES += \
+#    android.hardware.automotive.evs@1.1-EvsEnumeratorHw \
+#    evs_service
 endif
 
 # -------@block_display-------
