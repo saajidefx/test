@@ -76,12 +76,10 @@ TARGET_USE_VENDOR_BOOT ?= true
 # Allow LZ4 compression
 BOARD_RAMDISK_USE_LZ4 := true
 
-ifeq ($(IMX8ULP_USES_GKI),true)
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.gki.enable=true
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
-endif
 
 # We load the fstab from device tree so this is not needed, but since no kernel modules are installed to vendor
 # boot ramdisk so far, we need this step to generate the vendor-ramdisk folder or build process would fail. This
@@ -287,7 +285,7 @@ PRODUCT_AAPT_CONFIG += xlarge large tvdpi hdpi xhdpi xxhdpi
 
 # HWC2 HAL
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service
+    android.hardware.graphics.composer3-service.imx
 
 # define frame buffer count
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -296,11 +294,20 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Gralloc HAL
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl.imx \
-    android.hardware.graphics.allocator-service.imx
+    android.hardware.graphics.allocator-service.imx \
+    mapper.imx
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
     android.hardware.renderscript@1.0-impl
+
+# 2d test
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+PRODUCT_PACKAGES += 2d-test
+endif
+
+PRODUCT_PACKAGES += \
+    libg2d-opencl
 
 # -------@block_gpu-------
 
@@ -338,6 +345,10 @@ PRODUCT_PACKAGES += \
 
 PRODUCT_VENDOR_PROPERTIES += \
     ro.hardware.egl = VIVANTE
+
+# GPU openCL g2d
+PRODUCT_COPY_FILES += \
+    $(IMX_PATH)/imx/opencl-2d/cl_g2d.cl:$(TARGET_COPY_OUT_VENDOR)/etc/cl_g2d.cl
 
 # -------@block_wifi-------
 
@@ -427,9 +438,9 @@ endif
 
 # Neural Network HAL and lib
 PRODUCT_PACKAGES += \
-    libovxlib \
-    libnnrt \
-    android.hardware.neuralnetworks@1.3-service-vsi-npu-server
+    libtim-vx \
+    libVsiSupportLibrary \
+    android.hardware.neuralnetworks-shell-service-imx
 
 # Tensorflow lite camera demo
 PRODUCT_PACKAGES += \

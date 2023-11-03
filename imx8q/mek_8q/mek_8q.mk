@@ -69,6 +69,19 @@ ifneq ($(PRODUCT_IMX_CAR),true)
     TARGET_VENDOR_PROP := $(LOCAL_PATH)/product_mek_8q.prop
 endif
 
+# HDMI CEC AIDL HAL
+PRODUCT_PACKAGES += \
+    android.hardware.tv.hdmi.cec-service.imx \
+    android.hardware.tv.hdmi.connection-service.imx \
+    hdmi_cec_nxp
+
+# Setup HDMI CEC as Playback Device
+PRODUCT_PROPERTY_OVERRIDES += ro.hdmi.device_type=4 \
+    persist.sys.hdmi.keep_awake=false
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.hdmi.cec.xml:system/etc/permissions/android.hardware.hdmi.cec.xml
+
 # Thermal HAL
 PRODUCT_PACKAGES += \
     android.hardware.thermal-service.imx
@@ -396,7 +409,7 @@ PRODUCT_AAPT_CONFIG += xlarge large tvdpi hdpi xhdpi xxhdpi
 
 # HWC2 HAL
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service
+    android.hardware.graphics.composer3-service.imx
 
 # define frame buffer count
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -405,7 +418,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Gralloc HAL
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl.imx \
-    android.hardware.graphics.allocator-service.imx
+    android.hardware.graphics.allocator-service.imx \
+    mapper.imx
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -559,9 +573,9 @@ endif
 # -------@block_neural_network-------
 # Neural Network HAL and Lib
 PRODUCT_PACKAGES += \
-    libovxlib \
-    libnnrt \
-    android.hardware.neuralnetworks@1.3-service-vsi-npu-server
+    libtim-vx \
+    libVsiSupportLibrary \
+    android.hardware.neuralnetworks-shell-service-imx
 
 ifneq ($(PRODUCT_IMX_CAR),true)
 # Tensorflow lite camera demo

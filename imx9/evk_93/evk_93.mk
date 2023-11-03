@@ -77,12 +77,10 @@ TARGET_USE_VENDOR_BOOT ?= true
 # Allow LZ4 compression
 BOARD_RAMDISK_USE_LZ4 := true
 
-ifeq ($(IMX93_USES_GKI),true)
 PRODUCT_PROPERTY_OVERRIDES += \
     vendor.gki.enable=true
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
 $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
-endif
 
 # We load the fstab from device tree so this is not needed, but since no kernel modules are installed to vendor
 # boot ramdisk so far, we need this step to generate the vendor-ramdisk folder or build process would fail. This
@@ -274,7 +272,7 @@ PRODUCT_AAPT_CONFIG += xlarge large tvdpi hdpi xhdpi xxhdpi
 
 # HWC2 HAL
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service
+    android.hardware.graphics.composer3-service.imx
 
 # define frame buffer count
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -283,7 +281,8 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Gralloc HAL
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl.imx \
-    android.hardware.graphics.allocator-service.imx
+    android.hardware.graphics.allocator-service.imx \
+    mapper.imx
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \

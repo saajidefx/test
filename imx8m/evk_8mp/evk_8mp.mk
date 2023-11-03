@@ -50,6 +50,19 @@ PRODUCT_PACKAGES += \
 
 TARGET_VENDOR_PROP := $(LOCAL_PATH)/product.prop
 
+# HDMI CEC AIDL HAL
+PRODUCT_PACKAGES += \
+    android.hardware.tv.hdmi.cec-service.imx \
+    android.hardware.tv.hdmi.connection-service.imx \
+    hdmi_cec_nxp
+
+# Setup HDMI CEC as Playback Device
+PRODUCT_PROPERTY_OVERRIDES += ro.hdmi.device_type=4 \
+    persist.sys.hdmi.keep_awake=false
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.hdmi.cec.xml:system/etc/permissions/android.hardware.hdmi.cec.xml
+
 # Thermal HAL
 PRODUCT_PACKAGES += \
     android.hardware.thermal-service.imx
@@ -74,7 +87,7 @@ TARGET_USE_VENDOR_BOOT ?= true
 # Allow LZ4 compression
 BOARD_RAMDISK_USE_LZ4 := true
 
-ifeq ($(IMX8MP_USES_GKI),true)
+ifeq ($(LOADABLE_KERNEL_MODULE),true)
   BOARD_USES_GENERIC_KERNEL_IMAGE := true
   $(call inherit-product, $(SRC_TARGET_DIR)/product/generic_ramdisk.mk)
 endif
@@ -308,7 +321,7 @@ PRODUCT_AAPT_CONFIG += xlarge large tvdpi hdpi xhdpi xxhdpi
 
 # HWC2 HAL
 PRODUCT_PACKAGES += \
-    android.hardware.graphics.composer@2.4-service
+    android.hardware.graphics.composer3-service.imx
 
 # define frame buffer count
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
@@ -317,11 +330,17 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 # Gralloc HAL
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl.imx \
-    android.hardware.graphics.allocator-service.imx
+    android.hardware.graphics.allocator-service.imx \
+    mapper.imx
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
     android.hardware.renderscript@1.0-impl
+
+# 2d test
+ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
+PRODUCT_PACKAGES += 2d-test
+endif
 
 PRODUCT_PACKAGES += \
     libg2d-opencl
@@ -488,9 +507,9 @@ endif
 
 # Neural Network HAL and lib
 PRODUCT_PACKAGES += \
-    libovxlib \
-    libnnrt \
-    android.hardware.neuralnetworks@1.3-service-vsi-npu-server
+    libtim-vx \
+    libVsiSupportLibrary \
+    android.hardware.neuralnetworks-shell-service-imx
 
 # Tensorflow lite camera demo
 PRODUCT_PACKAGES += \
