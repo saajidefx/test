@@ -41,7 +41,8 @@ BOARD_VENDOR_KERNEL_MODULES += \
     $(KERNEL_OUT)/sound/soc/sof/imx/imx-common.ko \
     $(KERNEL_OUT)/sound/soc/sof/imx/snd-sof-imx8.ko \
     $(KERNEL_OUT)/drivers/iio/imu/fxos8700_core.ko \
-    $(KERNEL_OUT)/drivers/iio/imu/fxos8700_i2c.ko
+    $(KERNEL_OUT)/drivers/iio/imu/fxos8700_i2c.ko \
+    $(KERNEL_OUT)/drivers/iio/light/isl29018.ko
 
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES += \
     $(KERNEL_OUT)/drivers/mailbox/imx-mailbox.ko \
