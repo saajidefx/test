@@ -246,13 +246,16 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 #DRM Widevine 1.4 L1 support
 PRODUCT_PACKAGES += \
-    android.hardware.drm-service.widevine \
     android.hardware.drm-service.clearkey \
     libwvdrmcryptoplugin \
     libwvaidl \
-    liboemcrypto \
+    liboemcrypto
+
+TARGET_BUILD_WIDEVINE :=
+TARGET_BUILD_WIDEVINE_USE_PREBUILT := true
 
 $(call inherit-product-if-exists, vendor/nxp-private/widevine/nxp_widevine_tee_8mp.mk)
+$(call inherit-product-if-exists, vendor/nxp-private/widevine/apex/device.mk)
 
 # -------@block_audio-------
 
@@ -311,9 +314,6 @@ PRODUCT_SOONG_NAMESPACES += vendor/nxp-opensource/imx/camera
 PRODUCT_PACKAGES += \
     media_profiles_8mp-ov5640.xml \
     media_profiles_8mp-ispsensor-ov5640.xml
-
-# Add WebCam option in settings
-PRODUCT_VENDOR_PROPERTIES += ro.usb.uvc.enabled=true
 
 # -------@block_display-------
 

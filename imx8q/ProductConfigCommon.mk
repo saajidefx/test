@@ -254,10 +254,6 @@ PRODUCT_PACKAGES += \
     camera.device-external-imx-impl.so
 endif
 
-# Foreground service DeviceAsCamera
-PRODUCT_PACKAGES += \
-    DeviceAsWebcam
-
 PRODUCT_PACKAGES += \
     Camera2
 

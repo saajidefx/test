@@ -231,13 +231,16 @@ $(call  inherit-product-if-exists, vendor/nxp-private/security/nxp_security.mk)
 
 #DRM Widevine L1 1.4 support
 PRODUCT_PACKAGES += \
-    android.hardware.drm-service.widevine \
     android.hardware.drm-service.clearkey \
     libwvdrmcryptoplugin \
     libwvaidl \
-    liboemcrypto \
+    liboemcrypto
+
+TARGET_BUILD_WIDEVINE :=
+TARGET_BUILD_WIDEVINE_USE_PREBUILT := true
 
 $(call inherit-product-if-exists, vendor/nxp-private/widevine/nxp_widevine_tee_8mq.mk)
+$(call inherit-product-if-exists, vendor/nxp-private/widevine/apex/device.mk)
 
 # -------@block_audio-------
 # Audio card json
@@ -261,9 +264,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_SOONG_NAMESPACES += hardware/google/camera
 PRODUCT_SOONG_NAMESPACES += vendor/nxp-opensource/imx/camera
-
-# Add WebCam option in settings
-PRODUCT_VENDOR_PROPERTIES += ro.usb.uvc.enabled=true
 
 # -------@block_display-------
 PRODUCT_AAPT_CONFIG += xlarge large tvdpi hdpi xhdpi xxhdpi
