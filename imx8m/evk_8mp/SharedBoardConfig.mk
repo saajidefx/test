@@ -160,11 +160,11 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES +=     \
     $(KERNEL_OUT)/drivers/trusty/trusty-log.ko \
     $(KERNEL_OUT)/drivers/trusty/trusty-virtio.ko \
     $(KERNEL_OUT)/drivers/trusty/trusty-ipc.ko \
-    $(KERNEL_OUT)/drivers/soc/imx/imx8m-blk-ctrl.ko \
-    $(KERNEL_OUT)/drivers/soc/imx/imx8mp-blk-ctrl.ko \
-    $(KERNEL_OUT)/drivers/soc/imx/imx8m_pm_domains.ko \
     $(KERNEL_OUT)/drivers/soc/imx/gpcv2.ko \
     $(KERNEL_OUT)/drivers/soc/imx/gpcv2-imx.ko \
+    $(KERNEL_OUT)/drivers/soc/imx/imx8m_pm_domains.ko \
+    $(KERNEL_OUT)/drivers/soc/imx/imx8m-blk-ctrl.ko \
+    $(KERNEL_OUT)/drivers/soc/imx/imx8mp-blk-ctrl.ko \
     $(KERNEL_OUT)/drivers/clocksource/timer-imx-sysctr.ko \
     $(KERNEL_OUT)/drivers/soc/imx/busfreq-imx8mq.ko \
     $(KERNEL_OUT)/drivers/irqchip/irq-imx-irqsteer.ko \
@@ -216,7 +216,6 @@ BOARD_VENDOR_RAMDISK_KERNEL_MODULES +=     \
     $(KERNEL_OUT)/drivers/usb/typec/mux/gpio-switch.ko \
     $(KERNEL_OUT)/drivers/power/supply/dummy_battery.ko \
     $(KERNEL_OUT)/drivers/nvmem/nvmem-imx-ocotp.ko \
-    $(KERNEL_OUT)/drivers/thermal/device_cooling.ko \
     $(KERNEL_OUT)/drivers/perf/fsl_imx8_ddr_perf.ko \
     $(KERNEL_OUT)/drivers/cpufreq/cpufreq-dt.ko \
     $(KERNEL_OUT)/drivers/cpufreq/imx-cpufreq-dt.ko \

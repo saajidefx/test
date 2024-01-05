@@ -327,11 +327,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     ro.surface_flinger.max_frame_buffer_acquired_buffers=3
 
+# disable frame rate override
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.surface_flinger.enable_frame_rate_override=false
+
 # Gralloc HAL
 PRODUCT_PACKAGES += \
     android.hardware.graphics.mapper@4.0-impl.imx \
-    android.hardware.graphics.allocator-service.imx \
-    mapper.imx
+    android.hardware.graphics.allocator-service.imx
 
 # RenderScript HAL
 PRODUCT_PACKAGES += \
@@ -507,6 +510,7 @@ endif
 
 # Neural Network HAL and lib
 PRODUCT_PACKAGES += \
+    libovxlib \
     libtim-vx \
     libVsiSupportLibrary \
     android.hardware.neuralnetworks-shell-service-imx
@@ -549,7 +553,7 @@ endif
 
 # Display Device Config
 PRODUCT_COPY_FILES += \
-    device/nxp/imx8m/displayconfig/display_port_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_port_0.xml
+    device/nxp/imx8m/displayconfig/display_id_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/displayconfig/display_id_0.xml
 
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.output.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.output.xml \
