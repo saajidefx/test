@@ -255,9 +255,10 @@ PRODUCT_PACKAGES += \
     Camera2
 
 ifeq ($(PRODUCT_IMX_CAR),true)
-#PRODUCT_PACKAGES += \
-#    android.hardware.automotive.evs@1.1-EvsEnumeratorHw \
-#    evs_service
+PRODUCT_PACKAGES += \
+    android.hardware.automotive.evs@EvsEnumeratorHw \
+    cardisplayproxyd \
+    evs_service
 endif
 
 # -------@block_display-------

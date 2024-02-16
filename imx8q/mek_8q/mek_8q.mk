@@ -401,9 +401,9 @@ PRODUCT_PACKAGES += \
     Camera2Basic \
     MultiCamera
 else
-#PRODUCT_PACKAGES += \
-#    imx_evs_app \
-#    imx_evs_app_default_resources
+PRODUCT_PACKAGES += \
+    imx_evs_app \
+    imx_evs_app_default_resources
 endif
 
 # -------@block_display-------
