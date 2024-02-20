@@ -232,7 +232,6 @@ ifneq ($(PRODUCT_IMX_CAR),true)
 endif
 
 # -------@block_camera-------
-ifneq ($(PRODUCT_IMX_CAR),true)
 PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.7-service-google \
     android.hardware.camera.provider@2.7-impl-google \
@@ -251,7 +250,6 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider-V1-ndk.so \
     android.hardware.camera.provider-V1-external-impl.so \
     camera.device-external-imx-impl.so
-endif
 
 PRODUCT_PACKAGES += \
     Camera2
