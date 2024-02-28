@@ -163,7 +163,7 @@ BOARD_KERNEL_CMDLINE += moal.mod_para=wifi_mod_para.conf pci=nomsi
 
 ifeq ($(PRODUCT_IMX_CAR),true)
 # automotive config
-BOARD_KERNEL_CMDLINE += video=HDMI-A-2:d
+#BOARD_KERNEL_CMDLINE += video=HDMI-A-2:d
 else
 BOARD_BOOTCONFIG += androidboot.console=ttyLP0
 endif
