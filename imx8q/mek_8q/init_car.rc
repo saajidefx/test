@@ -19,6 +19,8 @@ on early-init
 
     # Use ro.boot.lcd_density to override ro.sf.lcd_density
     setprop ro.sf.lcd_density ${ro.boot.lcd_density}
+    # Lower AudioFlinger standby time to quickly switch to BT HFP call
+    setprop ro.audio.flinger_standbytime_ms 200
 
 on init
     start watchdogd
